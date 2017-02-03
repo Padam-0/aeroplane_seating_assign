@@ -7,6 +7,29 @@ def organize_booking(booking_name, pas_in_booking, empty_seats_per_row,
     pass
 
 
+def retrieve_data(engine, rows, cols):
+    # Connect to database and retrieve a list of empty seats and metric
+    # information
+
+    with engine.connect() as con:
+        empty_seats = con.execute("SELECT * FROM seating WHERE name "
+                                  "='';").fetchall()
+        metrics = con.execute('SELECT * FROM metrics;').fetchall()[0]
+
+    # Define metrics:
+    num_pas_refused, num_pas_split = metrics[0], metrics[1]
+
+    # Create list of empty seats per row
+    empty_seats_per_row = {}
+    for row in range(rows):
+        empty_seats_in_row = 0
+        for col in cols:
+            if (row + 1, col, '') in empty_seats: empty_seats_in_row += 1
+        empty_seats_per_row[row + 1] = empty_seats_in_row
+
+    return empty_seats, empty_seats_per_row, num_pas_refused, num_pas_split
+
+
 def find_allocation_order(number_of_pas, cols, empty_seats_per_row):
     pass
 
