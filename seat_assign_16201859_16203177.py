@@ -56,7 +56,10 @@ def find_allocation_order(number_of_pas, cols, empty_seats_per_row):
 
     # Create dictionary of number of rows with n empty seats
     rows_with_n_empty_seats = {}
-
+    for n in range(len(cols), 0, -1):
+        rows_with_n_empty_seats[n] = len([k for (k, v) in
+                                          empty_seats_per_row.items() if
+                                          v == n])
 
     # Calculate a list of rows with the number of empty seats in rows that
     # have empty seats, ordered from most empty to least empty
