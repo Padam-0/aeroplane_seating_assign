@@ -173,12 +173,23 @@ def main():
         # If the allocation order has splits
         if len(allocation_order) > 1:
             # Update number of passengers split
+            num_pas_split += len(allocation_order) - 1
+            write_database(engine, "UPDATE metrics SET "
+                        "passengers_separated = ?;", num_pas_split)
 
             # For each allocation in the allocation order
             for allocation in allocation_order:
                 # If there are no empty seats
                 if len(empty_seats) <= 0:
-                    pass
+                    # Update the number of passengers refused
+                    num_pas_refused += allocation
+                    # Update metrics table
+                    write_database(engine, "UPDATE metrics SET "
+                                           "passengers_refused = ?;",
+                                   num_pas_refused)
+
+                    print(booking_name, "(" + str(allocation) + ") "
+                            "refused."); continue
 
                 # Else, if there are empty seats, allocate Booking and write
                 # to the seating table
