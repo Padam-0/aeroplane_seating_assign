@@ -171,9 +171,25 @@ def main():
                                                  cols, empty_seats_per_row)
 
         # If the allocation order has splits
+        if len(allocation_order) > 1:
+            # Update number of passengers split
+
+            # For each allocation in the allocation order
+            for allocation in allocation_order:
+                # If there are no empty seats
+                if len(empty_seats) <= 0:
+                    pass
+
+                # Else, if there are empty seats, allocate Booking and write
+                # to the seating table
+
+
+                # Retrieve seat map from database, and refresh metrics
+
 
         # If allocation order has no splits
-        pass
+        else:
+            # Allocate Booking and write to Database
 
 
 if __name__ == '__main__':
