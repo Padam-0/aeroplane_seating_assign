@@ -12,7 +12,8 @@ def find_allocation_order(number_of_pas, cols, empty_seats_per_row):
 
 
 def write_database(engine, command, data):
-    pass
+    with engine.connect() as con:
+        con.execute(command, data)
 
 
 def main():
