@@ -84,22 +84,39 @@ def test_find_row_with_n_empty_seats():
 
     res1 = find_row_with_n_empty_seats(empty_seats_per_row, number_of_pas, e)
     res2 = find_row_with_n_empty_seats(empty_seats_per_row, number_of_pas, e2)
-    res3 = find_row_with_n_empty_seats(empty_seats_per_row2, number_of_pas, e)
+    res3 = find_row_with_n_empty_seats(empty_seats_per_row2, number_of_pas, e2)
 
     # Unit Tests
     assert res1 == (False, 0)
     assert res2 == (True, 1)
-    assert res3 == (True, 4)
+    assert res3 == (True, 5)
 
 
 def test_find_allocation_order():
-    pass
+    # Inputs
+    number_of_pas = None
+    cols = None
+    empty_seats_per_row = None
+
+    # Outputs
+    allocation_order = None
 
 def test_write_database():
+    # As there is no return values from this function, standard unit testing will not
+    # be applied. The functionality of this module will be tested during functional
+    # testing
     pass
+
 
 def test_clean_database():
+    # As there is no return values from this function, standard unit testing will not
+    # be applied. The functionality of this module will be tested during functional
+    # testing
     pass
 
+
 def test_main():
+    # As there is no return values from this function, standard unit testing will not
+    # be applied. The functionality of this module will be tested during functional
+    # testing
     pass
