@@ -210,6 +210,16 @@ def main():
         # If allocation order has no splits
         else:
             # Allocate Booking and write to Database
+            organize_booking(booking_name, pas_in_booking,
+                             empty_seats_per_row, empty_seats, cols, engine)
+            passengers_seated += pas_in_booking
+
+            split = "together."
+            if pas_in_booking == 1:
+                split = "by self."
+
+            print(booking_name, "(" + str(pas_in_booking) + ") seated",
+                  split)
 
 
 if __name__ == '__main__':
