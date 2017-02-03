@@ -47,6 +47,8 @@ def main():
             print("Invalid booking: %s" % booking_name); continue
 
         # Retrieve seat map from database, and refresh metrics
+        empty_seats, empty_seats_per_row, num_pas_refused, num_pas_split = \
+            retrieve_data(engine, rows, cols)
 
         # If no empty seats available
 
