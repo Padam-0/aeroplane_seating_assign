@@ -52,7 +52,6 @@ def organize_booking(booking_name, pas_in_booking, empty_seats_per_row,
 def retrieve_data(engine, rows, cols):
     # Connect to database and retrieve a list of empty seats and metric
     # information
-
     with engine.connect() as con:
         empty_seats = con.execute("SELECT * FROM seating WHERE name "
                                   "='';").fetchall()
