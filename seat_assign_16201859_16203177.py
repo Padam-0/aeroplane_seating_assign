@@ -25,6 +25,7 @@ def main():
                         for i in f]
 
     # Create connection engine to database
+    engine = create_engine('sqlite:///' + db_name)
 
     # Retrieve rows and seats information from rows_cols table
 
