@@ -84,7 +84,25 @@ def find_allocation_order(number_of_pas, cols, empty_seats_per_row):
 
         # While the whole booking has not been allocated
         while leftovers != 0:
-            pass
+            if leftovers > max(emptiest_rows):
+                best_row = max(emptiest_rows)
+                leftovers -= best_row
+            elif leftovers in emptiest_rows:
+                best_row = leftovers
+                leftovers = 0
+            else:
+                best_row = leftovers
+                leftovers = 0
+                remove = False
+
+            allocation_order.append(best_row)
+            if remove: emptiest_rows.remove(best_row)
+
+            # If the emptiest rows list is empty
+            if len(emptiest_rows) == 0 and leftovers != 0:
+                # Append all the leftovers to the allocation order
+                allocation_order.append(leftovers);
+                break
 
     # Else, if Split is False
     else:
