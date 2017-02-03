@@ -73,14 +73,22 @@ def find_allocation_order(number_of_pas, cols, empty_seats_per_row):
 
     # Finds if there is a row that has enough empty seats to sit the whole
     # party. If one is found, Split is set to False
+    for i in range(number_of_pas, len(cols) + 1):
+        if rows_with_n_empty_seats[i] != 0: split = False; break
 
     # If Split is True
     if split:
-        pass
+        # Set the initial leftovers to the booking size
+        leftovers = number_of_pas
+        remove = True
+
+        # While the whole booking has not been allocated
+        while leftovers != 0:
+            pass
 
     # Else, if Split is False
     else:
-        pass
+        allocation_order = [number_of_pas]
 
     return allocation_order
 
