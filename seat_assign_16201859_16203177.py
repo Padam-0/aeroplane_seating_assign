@@ -98,6 +98,15 @@ def main():
             retrieve_data(engine, rows, cols)
 
         # If no empty seats available
+        if len(empty_seats) <= 0:
+            #update metric with passengers in booking
+            num_pas_refused += pas_in_booking
+            write_database(engine, "UPDATE metrics SET "
+                "passengers_refused = ?;", num_pas_refused)
+
+            # Return booking name and the number of passengers refused
+            print(booking_name, "(" + str(pas_in_booking) + ") "
+                    "refused."); continue
 
         # Build the allocation order
 
