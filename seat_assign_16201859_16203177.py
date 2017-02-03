@@ -17,6 +17,7 @@ def write_database(engine, command, data):
 
 def main():
     # Get command line arguments
+    filename, db_name = sys.argv[2], sys.argv[1]
 
     # Read in bookings information
 
