@@ -50,7 +50,33 @@ def organize_booking(booking_name, pas_in_booking, empty_seats_per_row,
 
 
 def find_allocation_order(number_of_pas, cols, empty_seats_per_row):
-    pass
+    # Sets the allocation order, a list of allocations that will be grouped
+    # together
+    allocation_order = []
+
+    # Create dictionary of number of rows with n empty seats
+    rows_with_n_empty_seats = {}
+
+
+    # Calculate a list of rows with the number of empty seats in rows that
+    # have empty seats, ordered from most empty to least empty
+
+
+    # Set Split to default to True
+    split = True
+
+    # Finds if there is a row that has enough empty seats to sit the whole
+    # party. If one is found, Split is set to False
+
+    # If Split is True
+    if split:
+        pass
+
+    # Else, if Split is False
+    else:
+        pass
+
+    return allocation_order
 
 
 def write_database(engine, command, data):
@@ -109,6 +135,8 @@ def main():
                     "refused."); continue
 
         # Build the allocation order
+        allocation_order = find_allocation_order(pas_in_booking,
+                                                 cols, empty_seats_per_row)
 
         # If the allocation order has splits
 
