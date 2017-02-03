@@ -28,12 +28,23 @@ def main():
     engine = create_engine('sqlite:///' + db_name)
 
     # Retrieve rows and seats information from rows_cols table
+    with engine.connect() as con:
+        rc = con.execute('SELECT * FROM rows_cols;').fetchall()[0]
+
+    rows, cols = rc[0], rc[1]
+
+    # Set total passengers seated to 0
+    passengers_seated = 0
 
     # For each booking in the list of bookings
     for booking in bookings:
         # Set booking name and number of passengers in booking
+        booking_name, pas_in_booking = booking[0], booking[1]
 
         # If passengers in booking is invalid (negative)
+        if pas_in_booking <= 0:
+            # Restart the for loop. Do not allocate a seat to the passenger
+            print("Invalid booking: %s" % booking_name); continue
 
         # Retrieve seat map from database, and refresh metrics
 
