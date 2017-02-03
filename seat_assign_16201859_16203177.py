@@ -30,6 +30,20 @@ def retrieve_data(engine, rows, cols):
     return empty_seats, empty_seats_per_row, num_pas_refused, num_pas_split
 
 
+def find_row_with_n_empty_seats(empty_seats_per_row, number_of_pas, e):
+    # Finds a row which has a number of empty seats (number of passengers
+    # plus the constant e), if one exists.
+
+    # For each row in the empty_seats_per_row list
+    for (key, val) in empty_seats_per_row.items():
+        # If the number of empty seats in the row is equal to the number of
+        # passengers plus the constant e, return that True and that row number
+        if val == number_of_pas + e: return True, key
+
+    # If no row is found, return False, 0
+    return False, 0
+
+
 def find_allocation_order(number_of_pas, cols, empty_seats_per_row):
     pass
 
