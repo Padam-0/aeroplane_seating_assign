@@ -2,7 +2,14 @@ from sqlalchemy import create_engine
 import sys
 
 def clean_database(db_name):
-    pass
+    # Create engine
+    engine = create_engine('sqlite:///' + db_name)
+
+    # Set all database fields to empty / 0
+    with engine.connect() as con:
+        con.execute("UPDATE seating SET name = '';")
+        con.execute("UPDATE metrics SET passengers_refused = 0;")
+        con.execute("UPDATE metrics SET passengers_separated = 0;")
 
 
 def organize_booking(booking_name, pas_in_booking, empty_seats_per_row,
