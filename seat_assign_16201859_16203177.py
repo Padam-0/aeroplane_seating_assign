@@ -193,10 +193,19 @@ def main():
 
                 # Else, if there are empty seats, allocate Booking and write
                 # to the seating table
-
+                organize_booking(booking_name, allocation, empty_seats_per_row,
+                    empty_seats, cols, engine)
+                passengers_seated += allocation
 
                 # Retrieve seat map from database, and refresh metrics
+                empty_seats, empty_seats_per_row, num_pas_refused, \
+                    num_pas_split = retrieve_data(engine, rows, cols)
 
+                split = "together"
+                if allocation == 1: split = "by self."
+
+                print(booking_name, "(" + str(allocation) + ") seated",
+                      split)
 
         # If allocation order has no splits
         else:
