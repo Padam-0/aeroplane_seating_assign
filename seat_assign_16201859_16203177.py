@@ -1,6 +1,9 @@
 from sqlalchemy import create_engine
 import sys
 
+def clean_database(db_name):
+    pass
+
 
 def organize_booking(booking_name, pas_in_booking, empty_seats_per_row,
         empty_seats, cols, engine):
@@ -50,7 +53,11 @@ def write_database(engine, command, data):
 
 def main():
     # Get command line arguments
-    filename, db_name = sys.argv[2], sys.argv[1]
+    if sys.argv[1] == "clean":
+        clean_database(sys.argv[2])
+        exit("Database %s Cleaned" % sys.argv[2])
+    else:
+        filename, db_name = sys.argv[2], sys.argv[1]
 
     # Read in bookings information
     with open(filename, 'r') as f:
