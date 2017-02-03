@@ -33,6 +33,7 @@ def organize_booking(booking_name, pas_in_booking, empty_seats_per_row,
             # True and the row number.
             result = find_row_with_n_empty_seats(empty_seats_per_row,
                                                  pas_in_booking, e)
+
             # If a row exists with more empty seats than required
             if result[0]: row_number = result[1]; break
 
