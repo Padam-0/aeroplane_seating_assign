@@ -4,7 +4,26 @@ import sys
 
 def organize_booking(booking_name, pas_in_booking, empty_seats_per_row,
         empty_seats, cols, engine):
-    pass
+    # Allocates seats and writes to the database for given booking information
+
+    passenger_info = []
+
+    # Find a row with the required number of empty seats
+    # Search in empty seats per row list for a match
+
+
+    # If a perfect row doesn't exist
+
+
+    # Find seat letters that correspond to empty seats in the required row
+
+
+    # Append row and seat information for each passenger in the booking
+
+
+    # Write passenger information to the database
+    write_database(engine, "UPDATE seating SET name = ? WHERE row = ? "
+                           "AND seat = ?;", passenger_info)
 
 
 def find_allocation_order(number_of_pas, cols, empty_seats_per_row):
