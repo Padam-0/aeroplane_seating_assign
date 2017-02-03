@@ -222,5 +222,10 @@ def main():
                   split)
 
 
+    print("\n   ---   ***   ---   \n")
+    print(passengers_seated, "Passengers Seated")
+    print(num_pas_split, "Parties Split")
+    print(num_pas_refused, "Refused Entry\n\n")
+
 if __name__ == '__main__':
     main()
