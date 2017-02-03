@@ -21,9 +21,10 @@ def organize_booking(booking_name, pas_in_booking, empty_seats_per_row,
             # If a row exists that has more empty seats than required,
             # find_row_with_n_empty_seats returns a list with 2 entries,
             # True and the row number.
-
+            result = find_row_with_n_empty_seats(empty_seats_per_row,
+                                                 pas_in_booking, e)
             # If a row exists with more empty seats than required
-            pass
+            if result[0]: row_number = result[1]; break
 
     # Find seat letters that correspond to empty seats in the required row
     seat_letters = [i[1] for i in empty_seats if i[0] == row_number]
