@@ -26,10 +26,12 @@ def organize_booking(booking_name, pas_in_booking, empty_seats_per_row,
             pass
 
     # Find seat letters that correspond to empty seats in the required row
-
+    seat_letters = [i[1] for i in empty_seats if i[0] == row_number]
 
     # Append row and seat information for each passenger in the booking
-
+    for i in range(pas_in_booking):
+        passenger_info.append([booking_name, str(row_number),
+                               str(seat_letters[i])])
 
     # Write passenger information to the database
     write_database(engine, "UPDATE seating SET name = ? WHERE row = ? "
