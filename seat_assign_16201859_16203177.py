@@ -89,6 +89,7 @@ def find_row_with_n_empty_seats(empty_seats_per_row, number_of_pas, e):
 def find_allocation_order(number_of_pas, cols, empty_seats_per_row):
     # Sets the allocation order, a list of allocations that will be grouped
     # together
+
     allocation_order = []
 
     # Create dictionary of number of rows with n empty seats
@@ -144,6 +145,7 @@ def find_allocation_order(number_of_pas, cols, empty_seats_per_row):
     # Else, if Split is False
     else:
         allocation_order = [number_of_pas]
+
 
     return allocation_order
 
