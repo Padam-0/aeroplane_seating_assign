@@ -6,7 +6,8 @@ from seat_assign_16201859_16203177 import main, organize_booking, retrieve_data,
 # List of Inputs and Output variables used within the test functions
 
 engine = create_engine('sqlite:///' + "airline_seating.db")
-engine2 = create_engine('sqlite:///' + "test_airline_seating.db")
+engine2 = create_engine('sqlite:///' + "test/test_airline_seating.db")
+engine3 = create_engine('sqlite:///' + "test/test_airline_seating2.db")
 
 empty_seats = [(1, 'A', ''), (2, 'A', ''), (3, 'A', ''), (4, 'A', ''), (5, 'A', ''),
                    (6, 'A', ''), (7, 'A', ''), (8, 'A', ''), (9, 'A', ''), (10, 'A', ''),
@@ -50,7 +51,14 @@ def test_organize_booking():
     # As there is no return values from this function, standard unit testing will not
     # be applied. The functionality of this module will be tested during functional
     # testing
-    pass
+    booking_name = "Janis Mccullough"
+    pas_in_booking = 3
+    empty_seats = None
+
+    res1 = organize_booking(booking_name, pas_in_booking, empty_seats_per_row2,
+                            empty_seats2, cols, engine2)
+
+    assert res1 == None
 
 
 def test_retrieve_data():
