@@ -33,6 +33,7 @@ def organize_booking(booking_name, pas_in_booking, empty_seats_per_row,
             # True and the row number.
             result = find_row_with_n_empty_seats(empty_seats_per_row,
                                                  pas_in_booking, e)
+
             # If a row exists with more empty seats than required
             if result[0]: row_number = result[1]; break
 
@@ -49,9 +50,46 @@ def organize_booking(booking_name, pas_in_booking, empty_seats_per_row,
                            "AND seat = ?;", passenger_info)
 
 
+def retrieve_data(engine, rows, cols):
+    # Connect to database and retrieve a list of empty seats and metric
+    # information
+    with engine.connect() as con:
+        empty_seats = con.execute("SELECT * FROM seating WHERE name "
+                                  "='';").fetchall()
+        metrics = con.execute('SELECT * FROM metrics;').fetchall()[0]
+
+    # Define metrics:
+    num_pas_refused, num_pas_split = metrics[0], metrics[1]
+
+    # Create list of empty seats per row
+    empty_seats_per_row = {}
+    for row in range(rows):
+        empty_seats_in_row = 0
+        for col in cols:
+            if (row + 1, col, '') in empty_seats: empty_seats_in_row += 1
+        empty_seats_per_row[row + 1] = empty_seats_in_row
+
+    return empty_seats, empty_seats_per_row, num_pas_refused, num_pas_split
+
+
+def find_row_with_n_empty_seats(empty_seats_per_row, number_of_pas, e):
+    # Finds a row which has a number of empty seats (number of passengers
+    # plus the constant e), if one exists.
+
+    # For each row in the empty_seats_per_row list
+    for (key, val) in empty_seats_per_row.items():
+        # If the number of empty seats in the row is equal to the number of
+        # passengers plus the constant e, return that True and that row number
+        if val == number_of_pas + e: return True, key
+
+    # If no row is found, return False, 0
+    return False, 0
+
+
 def find_allocation_order(number_of_pas, cols, empty_seats_per_row):
     # Sets the allocation order, a list of allocations that will be grouped
     # together
+
     allocation_order = []
 
     # Create dictionary of number of rows with n empty seats
@@ -107,6 +145,7 @@ def find_allocation_order(number_of_pas, cols, empty_seats_per_row):
     # Else, if Split is False
     else:
         allocation_order = [number_of_pas]
+
 
     return allocation_order
 
