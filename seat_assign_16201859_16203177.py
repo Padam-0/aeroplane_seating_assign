@@ -1,4 +1,5 @@
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, MetaData, Column, Integer, String, \
+    Table, VARCHAR, CHAR, PrimaryKeyConstraint
 import sys
 
 def clean_database(db_name):
@@ -11,6 +12,44 @@ def clean_database(db_name):
         con.execute("UPDATE metrics SET passengers_refused = 0;")
         con.execute("UPDATE metrics SET passengers_separated = 0;")
 
+
+def create_db(db_name, rows, cols):
+
+    engine = create_engine('sqlite:///' + db_name)
+
+    meta = MetaData()
+
+    metrics = Table('metrics', meta,
+                      Column('passengers_refused', Integer),
+                      Column('passengers_separated', Integer)
+                      )
+    metrics.create(engine)
+
+    rc = Table('rows_cols', meta,
+                    Column('nrows', Integer),
+                    Column('seats', VARCHAR(16))
+                    )
+    rc.create(engine)
+
+    seating = Table('seating', meta,
+                Column('row', Integer, nullable=False),
+                Column('seat', VARCHAR(255), nullable=False),
+                Column('name', VARCHAR(255)),
+               )
+    seating.create(engine)
+
+    i1 = metrics.insert().values(passengers_refused=0, passengers_separated=0)
+    i2 = rc.insert().values(nrows=rows, seats=cols)
+
+    for j in cols:
+        for i in range(1, rows+1):
+                i = seating.insert().values(row=i, seat=j, name='')
+                with engine.connect() as con:
+                    r = con.execute(i)
+
+    with engine.connect() as con:
+        r1 = con.execute(i1)
+        r2= con.execute(i2)
 
 def organize_booking(booking_name, pas_in_booking, empty_seats_per_row,
         empty_seats, cols, engine):
@@ -160,6 +199,9 @@ def main():
     if sys.argv[1] == "clean":
         clean_database(sys.argv[2])
         exit("Database %s Cleaned" % sys.argv[2])
+    elif sys.argv[1] == "create":
+        create_db(sys.argv[2], int(sys.argv[3]), sys.argv[4])
+        exit("Database %s Created" % sys.argv[2])
     else:
         filename, db_name = sys.argv[2], sys.argv[1]
 
