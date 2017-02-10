@@ -2,7 +2,7 @@
 
 from sqlalchemy import create_engine, MetaData, Column, Integer, String, \
     Table, VARCHAR
-import sys
+import sys, os
 
 def clean_database(db_name):
     """Resets a database to have an empty seat chart and zeroed metrics."""
@@ -229,7 +229,11 @@ def main():
                     for i in f]
 
     # Create connection engine to database
-    engine = create_engine('sqlite:///' + db_name)
+    if os.path.exists(db_name):
+        engine = create_engine('sqlite:///' + db_name)
+    else:
+        exit("Database file not found. Please check file location and try "
+             "again.")
 
     # Retrieve rows and seats information from rows_cols table
     with engine.connect() as con:
