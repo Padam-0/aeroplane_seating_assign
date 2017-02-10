@@ -225,7 +225,7 @@ def main():
     # Read in bookings information
     with open(filename, 'r') as f:
         bookings = [[i.rstrip().split(',')[0], int(i.rstrip().split(',')[1])]
-                        for i in f]
+                    for i in f]
 
     # Create connection engine to database
     engine = create_engine('sqlite:///' + db_name)
@@ -242,7 +242,10 @@ def main():
     # For each booking in the list of bookings
     for booking in bookings:
         # Set booking name and number of passengers in booking
-        booking_name, pas_in_booking = booking[0], booking[1]
+        try:
+            booking_name, pas_in_booking = booking[0], int(booking[1])
+        except:
+            print("Invalid booking: %s" % booking_name); continue
 
         # If passengers in booking is invalid (negative)
         if pas_in_booking <= 0:
