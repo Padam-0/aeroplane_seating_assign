@@ -67,7 +67,7 @@ def create_db(db_name, rows, seats):
 
 def organize_booking(booking_name, pas_in_booking, empty_seats_per_row,
         empty_seats, cols, engine):
-    # Allocates seats and writes to the database for given booking information
+    """Allocates seats and writes booking information to the database."""
 
     passenger_info = []
 
@@ -143,10 +143,7 @@ def find_row_with_n_empty_seats(empty_seats_per_row, number_of_pas, e):
 
 
 def find_allocation_order(number_of_pas, cols, empty_seats_per_row):
-    """ Sets a list of booking sizes that will be grouped together.
-
-    In order to avoid having to have a copy
-    """
+    """ Sets a list of booking sizes that will be grouped together."""
 
     # Initialise Allocation Order
     allocation_order = []
@@ -214,6 +211,7 @@ def find_allocation_order(number_of_pas, cols, empty_seats_per_row):
 
 def write_database(engine, command, data):
     """Write a SQL command and appropriate data to a given database."""
+
     with engine.connect() as con:
         con.execute(command, data)
 
@@ -326,7 +324,7 @@ def main():
             print(booking_name, "(" + str(pas_in_booking) + ") seated",
                   split)
 
-
+    # Print summary information
     print("\n   ---   ***   ---   \n")
     print(passengers_seated, "Passengers Seated")
     print(num_pas_split, "Parties Split")
