@@ -27,16 +27,21 @@ The software has three main usages:
 ### Seat Allocation
 
 This option is specified from the command line by calling:  
+  
 `python seat_assign_16201859_16203177.py data.db bookings.csv`  
-where data.db is the flight database and bookings.csv is the .CSV of bookings.
+  
+where `data.db` is the flight database and `bookings.csv` is the `.CSV` file
+ of bookings.
 
 
 
 ### Database Cleaning
 
 This option is specified from the command line by calling:  
+  
 `python seat_assign_16201859_16203177.py clean data.db`  
-where data.db is the flight database.
+  
+where `data.db` is the flight database.
 
 This function will set all seats in the `seating` table to empty, and reset 
 `metrics` to `0`. `rows_cols` will be untouched.
@@ -46,11 +51,11 @@ This function will set all seats in the `seating` table to empty, and reset
 
 This option is specified from the command line by calling:  
 `python seat_assign_16201859_16203177.py create data.db rows seats`  
-where data.db is the flight database, rows is the number of rows(ie 10) and 
-seats is the seating configuration (ie ABCDEF).
+where `sata.db` is the flight database, `rows` is the number of rows(ie `10`) 
+and `seats` is the seating configuration (ie `ABCDEF`).
 
-The flight database can either be existing (but completely empty) or 
-non-existing.
+The flight database can exist (but must be completely empty) or 
+will be created by the function.
 
 This function will create a database, populate the `rows_cols` table with the 
 specified number of rows and columns, initialise the `metrics` table to `0`, and
