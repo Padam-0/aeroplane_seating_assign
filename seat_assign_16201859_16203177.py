@@ -259,7 +259,7 @@ def main():
             retrieve_data(engine, rows, cols)
 
         # If no empty seats available
-        if len(empty_seats) <= 0:
+        if pas_in_booking > len(empty_seats):
             #update metric with passengers in booking
             num_pas_refused += pas_in_booking
             write_database(engine, "UPDATE metrics SET "

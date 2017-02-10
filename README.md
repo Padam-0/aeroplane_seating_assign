@@ -33,6 +33,22 @@ This option is specified from the command line by calling:
 where `data.db` is the flight database and `bookings.csv` is the `.CSV` file
  of bookings.
 
+This function reads in a booking
+
+A list of bookings will be printed to the command line with the booking name 
+and number of passengers in the booking, as well as a statement about 
+whether the party was seated or refused. If the party was seated but split, 
+multiple lines indicate the seating plan for that party.
+
+After all bookings have been processed, 3 summary statistics are printed. 
+The first contains the total number of passengers seated. The second shows 
+how many parties were split, and the last contains the total number of 
+passengers who were refused entry.
+
+Parties split refers to the number of ways the booking was split in order to 
+accomodate all passengers. As such, a 4 person booking that was split 2,2 is 
+recorded as a 1 party split, but a 5 person booking that was split 3,1,1 is 
+recorded as a 2 party split.
 
 
 ### Database Cleaning
