@@ -224,7 +224,7 @@ def main():
 
     # Read in bookings information
     with open(filename, 'r') as f:
-        bookings = [[i.rstrip().split(',')[0], int(i.rstrip().split(',')[1])]
+        bookings = [[i.rstrip().split(',')[0], i.rstrip().split(',')[1]]
                         for i in f]
 
     # Create connection engine to database
