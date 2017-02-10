@@ -1,8 +1,12 @@
+"""See README.md for module information. """
+
 from sqlalchemy import create_engine, MetaData, Column, Integer, String, \
-    Table, VARCHAR, CHAR, PrimaryKeyConstraint
+    Table, VARCHAR
 import sys
 
 def clean_database(db_name):
+    """Resets a database to have an empty seat chart and zeroed metrics."""
+
     # Create engine
     engine = create_engine('sqlite:///' + db_name)
 
@@ -13,24 +17,31 @@ def clean_database(db_name):
         con.execute("UPDATE metrics SET passengers_separated = 0;")
 
 
-def create_db(db_name, rows, cols):
+def create_db(db_name, rows, seats):
+    """Creates a test database with a given number of rows and seats"""
 
+    # Create an engine to access the database. Also creates the database if
+    # it does not already exist
     engine = create_engine('sqlite:///' + db_name)
 
+    # Load database metadata
     meta = MetaData()
 
+    # Create metrics table
     metrics = Table('metrics', meta,
                       Column('passengers_refused', Integer),
                       Column('passengers_separated', Integer)
                       )
     metrics.create(engine)
 
+    # Create rows_cols table
     rc = Table('rows_cols', meta,
                     Column('nrows', Integer),
                     Column('seats', VARCHAR(16))
                     )
     rc.create(engine)
 
+    # Create seating table
     seating = Table('seating', meta,
                 Column('row', Integer, nullable=False),
                 Column('seat', VARCHAR(255), nullable=False),
@@ -38,18 +49,21 @@ def create_db(db_name, rows, cols):
                )
     seating.create(engine)
 
+    # Initialise metrics table to 0, rows_cols table to contain informations
+    # about number of rows and seat in the plane
     i1 = metrics.insert().values(passengers_refused=0, passengers_separated=0)
-    i2 = rc.insert().values(nrows=rows, seats=cols)
+    i2 = rc.insert().values(nrows=rows, seats=seats)
+    with engine.connect() as con:
+        con.execute(i1)
+        con.execute(i2)
 
-    for j in cols:
+    # Initialise seating table with all possible combinations of seats
+    for j in seats:
         for i in range(1, rows+1):
                 i = seating.insert().values(row=i, seat=j, name='')
                 with engine.connect() as con:
-                    r = con.execute(i)
+                    con.execute(i)
 
-    with engine.connect() as con:
-        r1 = con.execute(i1)
-        r2= con.execute(i2)
 
 def organize_booking(booking_name, pas_in_booking, empty_seats_per_row,
         empty_seats, cols, engine):
@@ -90,6 +104,8 @@ def organize_booking(booking_name, pas_in_booking, empty_seats_per_row,
 
 
 def retrieve_data(engine, rows, cols):
+    """Retrieves required seating data from specified database."""
+
     # Connect to database and retrieve a list of empty seats and metric
     # information
     with engine.connect() as con:
@@ -112,31 +128,34 @@ def retrieve_data(engine, rows, cols):
 
 
 def find_row_with_n_empty_seats(empty_seats_per_row, number_of_pas, e):
-    # Finds a row which has a number of empty seats (number of passengers
-    # plus the constant e), if one exists.
+    """Find a row which has a number (n) of empty seats if one exists."""
+
+    n = number_of_pas + e
 
     # For each row in the empty_seats_per_row list
     for (key, val) in empty_seats_per_row.items():
         # If the number of empty seats in the row is equal to the number of
         # passengers plus the constant e, return that True and that row number
-        if val == number_of_pas + e: return True, key
+        if val == n: return True, key
 
     # If no row is found, return False, 0
     return False, 0
 
 
 def find_allocation_order(number_of_pas, cols, empty_seats_per_row):
-    # Sets the allocation order, a list of allocations that will be grouped
-    # together
+    """ Sets a list of booking sizes that will be grouped together.
 
+    In order to avoid having to have a copy
+    """
+
+    # Initialise Allocation Order
     allocation_order = []
 
     # Create dictionary of number of rows with n empty seats
     rows_with_n_empty_seats = {}
     for n in range(len(cols), 0, -1):
-        rows_with_n_empty_seats[n] = len([k for (k, v) in
-                                          empty_seats_per_row.items() if
-                                          v == n])
+        rows_with_n_empty_seats[n] = \
+            len([k for (k, v) in empty_seats_per_row.items() if v == n])
 
     # Calculate a list of rows with the number of empty seats in rows that
     # have empty seats, ordered from most empty to least empty
@@ -145,15 +164,15 @@ def find_allocation_order(number_of_pas, cols, empty_seats_per_row):
         if rows_with_n_empty_seats[i] > 0:
             for j in range(rows_with_n_empty_seats[i]): emptiest_rows.append(i)
 
-    # Set Split to default to True
+    # Set booking split to default to True
     split = True
 
     # Finds if there is a row that has enough empty seats to sit the whole
-    # party. If one is found, Split is set to False
+    # party. If one is found, booking split is set to False
     for i in range(number_of_pas, len(cols) + 1):
         if rows_with_n_empty_seats[i] != 0: split = False; break
 
-    # If Split is True
+    # If booking split is True
     if split:
         # Set the initial leftovers to the booking size
         leftovers = number_of_pas
@@ -161,25 +180,29 @@ def find_allocation_order(number_of_pas, cols, empty_seats_per_row):
 
         # While the whole booking has not been allocated
         while leftovers != 0:
+            # If there are more leftovers than the largest number of seats
+            # together remaining
             if leftovers > max(emptiest_rows):
                 best_row = max(emptiest_rows)
                 leftovers -= best_row
+            # If there is a row that can fit all leftovers perfectly
             elif leftovers in emptiest_rows:
                 best_row = leftovers
                 leftovers = 0
+            # Otherwise
             else:
                 best_row = leftovers
                 leftovers = 0
                 remove = False
 
+            # Append the number of passengers sitting together
             allocation_order.append(best_row)
             if remove: emptiest_rows.remove(best_row)
 
             # If the emptiest rows list is empty
             if len(emptiest_rows) == 0 and leftovers != 0:
                 # Append all the leftovers to the allocation order
-                allocation_order.append(leftovers);
-                break
+                allocation_order.append(leftovers); break
 
     # Else, if Split is False
     else:
@@ -190,6 +213,7 @@ def find_allocation_order(number_of_pas, cols, empty_seats_per_row):
 
 
 def write_database(engine, command, data):
+    """Write a SQL command and appropriate data to a given database."""
     with engine.connect() as con:
         con.execute(command, data)
 
