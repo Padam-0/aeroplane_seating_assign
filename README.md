@@ -33,8 +33,6 @@ This option is specified from the command line by calling:
 where `data.db` is the flight database and `bookings.csv` is the `.CSV` file
  of bookings.
 
-This function reads in a booking
-
 A list of bookings will be printed to the command line with the booking name 
 and number of passengers in the booking, as well as a statement about 
 whether the party was seated or refused. If the party was seated but split, 
@@ -49,6 +47,10 @@ Parties split refers to the number of ways the booking was split in order to
 accomodate all passengers. As such, a 4 person booking that was split 2,2 is 
 recorded as a 1 party split, but a 5 person booking that was split 3,1,1 is 
 recorded as a 2 party split.
+
+If there are more passengers in a booking than there are empty seats on the 
+plane, the entire booking is refused and seats filled with subsequent 
+(smaller) bookings.
 
 
 ### Database Cleaning
@@ -74,7 +76,7 @@ The flight database can exist (but must be completely empty) or
 will be created by the function.
 
 This function will create a database, populate the `rows_cols` table with the 
-specified number of rows and columns, initialise the `metrics` table to `0`, and
- populate the `seating` table with all seat combinations, and set these 
- seats to empty.
+specified number of rows and columns, initialise the `metrics` table to `0`, 
+and populate the `seating` table with all seat combinations, and set these 
+seats to empty.
 

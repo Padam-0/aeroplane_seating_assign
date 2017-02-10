@@ -196,11 +196,6 @@ def find_allocation_order(number_of_pas, cols, empty_seats_per_row):
             allocation_order.append(best_row)
             if remove: emptiest_rows.remove(best_row)
 
-            # If the emptiest rows list is empty
-            if len(emptiest_rows) == 0 and leftovers != 0:
-                # Append all the leftovers to the allocation order
-                allocation_order.append(leftovers); break
-
     # Else, if Split is False
     else:
         allocation_order = [number_of_pas]
