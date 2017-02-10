@@ -1,13 +1,16 @@
 import pytest
 from sqlalchemy import create_engine
+import sys
+
+sys.path.append("../")
 from seat_assign_16201859_16203177 import main, organize_booking, retrieve_data, \
     find_row_with_n_empty_seats, find_allocation_order, write_database
 
 # List of Inputs and Output variables used within the test functions
 
 engine = create_engine('sqlite:///' + "airline_seating.db")
-engine2 = create_engine('sqlite:///' + "test/test_airline_seating.db")
-engine3 = create_engine('sqlite:///' + "test/test_airline_seating2.db")
+engine2 = create_engine('sqlite:///' + "test_airline_seating.db")
+engine3 = create_engine('sqlite:///' + "test_airline_seating2.db")
 
 empty_seats = [(1, 'A', ''), (2, 'A', ''), (3, 'A', ''), (4, 'A', ''), (5, 'A', ''),
                    (6, 'A', ''), (7, 'A', ''), (8, 'A', ''), (9, 'A', ''), (10, 'A', ''),
