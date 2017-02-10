@@ -225,7 +225,7 @@ def main():
     # Read in bookings information
     with open(filename, 'r') as f:
 
-        bookings = [[i.rstrip().split(',')[0], int(i.rstrip().split(',')[1])]
+        bookings = [[i.rstrip().split(',')[0], i.rstrip().split(',')[1]]
                     for i in f]
 
     # Create connection engine to database
@@ -246,7 +246,7 @@ def main():
         try:
             booking_name, pas_in_booking = booking[0], int(booking[1])
         except:
-            print("Invalid booking: %s" % booking_name); continue
+            print("Invalid booking: %s" % booking[0]); continue
 
         # If passengers in booking is invalid (negative)
         if pas_in_booking <= 0:
