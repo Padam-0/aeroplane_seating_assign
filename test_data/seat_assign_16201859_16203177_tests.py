@@ -114,18 +114,15 @@ def test_find_row_with_n_empty_seats():
 def test_find_allocation_order():
     # Inputs
     number_of_pas1 = 3
-    number_of_pas2 = 1
-    number_of_pas3 = 5
+    number_of_pas2 = 5
 
     res1 = find_allocation_order(number_of_pas1, cols, empty_seats_per_row)
     res2 = find_allocation_order(number_of_pas2, cols, empty_seats_per_row)
-    res3 = find_allocation_order(number_of_pas3, cols, empty_seats_per_row)
-    res4 = find_allocation_order(number_of_pas3, cols, empty_seats_per_row2)
+    res3 = find_allocation_order(number_of_pas2, cols, empty_seats_per_row2)
 
     assert res1 == [3]
-    assert res2 == [1]
+    assert res2 == [4, 1]
     assert res3 == [4, 1]
-    assert res4 == [4, 1]
 
 
 def test_write_database():

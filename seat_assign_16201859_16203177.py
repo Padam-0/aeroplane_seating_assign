@@ -236,7 +236,7 @@ def main():
              "again.")
 
     # Retrieve rows and seats information from rows_cols table
-    with engine.connect() as con:
+    with engine.con_nect() as con:
         rc = con.execute('SELECT * FROM rows_cols;').fetchall()[0]
 
     rows, cols = rc[0], rc[1]
